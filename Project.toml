@@ -1,20 +1,20 @@
 name = "CompositionalMLStudy"
-uuid = "63333765-1eb4-4084-a4b6-54368fa6e15f"
-authors = ["TheCedarPrince <jacobszelko@gmail.com> and contributors"]
-version = "0.0.1"
+authors = ["Jacob S. Zelko"]
 
 [deps]
 ACSets = "227ef7b5-1206-438b-ac65-934d6da304b8"
-CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
-Catlab = "134e5e36-593f-5add-ad60-77f754baafbe"
+DBInterface = "a10d1c49-ce27-4219-8d33-6db1a4562965"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
+DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
+IPUMS = "51d1f77e-d457-4c14-a89d-9ed71839f38d"
+SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
 
 [compat]
-julia = "1.6"
-
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test"]
+ACSets = "0.2.12"
+DBInterface = "2.6"
+DataFrames = "1.6"
+DrWatson = "2.16"
+IJulia = "1.25"
+SQLite = "1.6"
+julia = "1.10"
