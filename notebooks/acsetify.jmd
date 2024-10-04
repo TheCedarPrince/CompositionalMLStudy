@@ -1,0 +1,134 @@
+
+
+## Dependency Set-Up
+
+```julia
+using DrWatson
+@quickactivate "CompositionalMLStudy"
+
+using ACSets
+using Catlab.CategoricalAlgebra
+using DataFrames
+
+import DBInterface:
+    execute
+
+import DrWatson:
+  datadir
+
+import IPUMS:
+  load_ipums_extract,
+  parse_ddi
+
+import OMOPCDMCohortCreator:
+    GenerateDatabaseDetails,
+    GenerateTables
+
+import SQLite:
+    DB
+```
+
+# Data Set-Up
+
+## OMOP CDM Data Directory
+
+```julia
+# OMOP CDM Data Directory
+OMOPCDM_DIR = datadir("exp_raw", "OMOPCDM")
+
+# OMOP CDM Example Data 
+DATABASE_FILE = "eunomia.sqlite"
+```
+
+## IPUMS Data Directory
+
+```julia
+# IPUMS Data Directory
+IPUMS_DIR = datadir("exp_raw", "IPUMS")
+
+# DDI Data Dictionary
+DDI_FILE = "cps_00097.xml"
+
+# IPUMS CPS Example Data 
+DAT_FILE = "cps_00097.dat"
+```
+
+## Load Data
+
+```julia
+omop_db_conn = DB(joinpath(OMOPCDM_DIR, DATABASE_FILE))
+GenerateDatabaseDetails(:sqlite, "omop");
+omop_tables = GenerateTables(omop_db_conn, exported = true);
+```
+
+```julia
+ddi = parse_ddi(joinpath(IPUMS_DIR, DDI_FILE));
+ipums = load_ipums_extract(ddi, joinpath(IPUMS_DIR, DAT_FILE));
+```
+
+# ACSet-ifying Data
+
+## OMOP CDM ACSets
+
+### Person Table
+
+```julia
+omop_tables[:person].columns
+```
+
+```julia
+@present SchPerson(FreeSchema) begin
+  (Numerical, Label)::AttrType
+
+  Person::Ob
+  person_id::Attr(Person, Numerical) 
+  person_source_value::Attr(Person, Label)
+
+  Gender::Ob
+  gender_concept_id::Attr(Gender, Numerical) 
+  gender_source_value::Attr(Gender, Label)
+  gender_source_concept_id::Attr(Gender, Numerical)
+
+  BirthDate::Ob
+  year_of_birth::Attr(BirthDate, Numerical)
+  month_of_birth::Attr(BirthDate, Numerical)
+  day_of_birth::Attr(BirthDate, Numerical)
+  birth_datetime::Attr(BirthDate, Numerical)
+
+  Race::Ob
+  race_concept_id::Attr(Race, Numerical)
+  race_source_value::Attr(Race, Label)
+  race_source_concept_id::Attr(Race, Numerical)
+
+  Ethnicity::Ob
+  ethnicity_concept_id::Attr(Ethnicity, Numerical)
+  ethnicity_source_value::Attr(Ethnicity, Label)
+  ethnicity_source_concept_id::Attr(Ethnicity, Numerical)
+
+  Location::Ob
+  location_id::Attr(Location, Numerical)
+
+  Provider::Ob
+  provider_id::Attr(Provider, Numerical)
+  
+  CareSite::Ob
+  care_site_id::Attr(CareSite, Numerical)
+
+end
+
+@acset_type PersonData(SchPerson, index=[:person_id])
+```
+
+```julia
+person_df = execute(omop_db_conn, "SELECT * FROM person;") |> DataFrame
+person = PersonData{Any, Any}()
+
+add_parts!(person, :Person, nrow(person_df), person_id = person_df.person_id, person_source_value = person_df.person_source_value)
+add_parts!(person, :Gender, nrow(person_df), gender_concept_id = person_df.gender_concept_id, gender_source_value = person_df.gender_source_value, gender_source_concept_id = person_df.gender_source_concept_id)
+add_parts!(person, :BirthDate, nrow(person_df), year_of_birth = person_df.year_of_birth, month_of_birth = person_df.month_of_birth, day_of_birth = person_df.day_of_birth, birth_datetime = person_df.birth_datetime)
+add_parts!(person, :Race, nrow(person_df), race_concept_id = person_df.race_concept_id, race_source_value = person_df.race_source_value, race_source_concept_id = person_df.race_source_concept_id)
+add_parts!(person, :Ethnicity, nrow(person_df), ethnicity_concept_id = person_df.ethnicity_concept_id, ethnicity_source_value = person_df.ethnicity_source_value, ethnicity_source_concept_id = person_df.ethnicity_source_concept_id)
+add_parts!(person, :Location, nrow(person_df), location_id = person_df.location_id)
+add_parts!(person, :Provider, nrow(person_df), provider_id = person_df.provider_id)
+add_parts!(person, :CareSite, nrow(person_df), care_site_id = person_df.care_site_id)
+```
