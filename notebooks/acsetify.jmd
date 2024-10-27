@@ -77,7 +77,7 @@ omop_tables[:person].columns
 ```
 
 ```julia
-@present SchPerson(FreeSchema) begin
+@present SchOMOPCDM(FreeSchema) begin
   (Numerical, Label)::AttrType
 
   Person::Ob
