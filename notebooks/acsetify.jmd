@@ -84,42 +84,44 @@ omop_tables[:person].columns
   person_id::Attr(Person, Numerical) 
   person_source_value::Attr(Person, Label)
 
-  Gender::Ob
-  gender::Hom(Gender, Person)
-  gender_concept_id::Attr(Gender, Numerical) 
-  gender_source_value::Attr(Gender, Label)
-  gender_source_concept_id::Attr(Gender, Numerical)
+  gender_concept_id::Attr(Person, Numerical) 
+  gender_source_value::Attr(Person, Label)
+  gender_source_concept_id::Attr(Person, Numerical)
 
-  BirthDate::Ob
-  birthdate::Hom(BirthDate, Person)
-  year_of_birth::Attr(BirthDate, Numerical)
-  month_of_birth::Attr(BirthDate, Numerical)
-  day_of_birth::Attr(BirthDate, Numerical)
-  birth_datetime::Attr(BirthDate, Numerical)
+  year_of_birth::Attr(Person, Numerical)
+  month_of_birth::Attr(Person, Numerical)
+  day_of_birth::Attr(Person, Numerical)
+  birth_datetime::Attr(Person, Numerical)
 
-  Race::Ob
-  race::Hom(Race, Person)
-  race_concept_id::Attr(Race, Numerical)
-  race_source_value::Attr(Race, Label)
-  race_source_concept_id::Attr(Race, Numerical)
+  race_concept_id::Attr(Person, Numerical)
+  race_source_value::Attr(Person, Label)
+  race_source_concept_id::Attr(Person, Numerical)
 
-  Ethnicity::Ob
-  ethnicity::Hom(Ethnicity, Person)
-  ethnicity_concept_id::Attr(Ethnicity, Numerical)
-  ethnicity_source_value::Attr(Ethnicity, Label)
-  ethnicity_source_concept_id::Attr(Ethnicity, Numerical)
+  ethnicity_concept_id::Attr(Person, Numerical)
+  ethnicity_source_value::Attr(Person, Label)
+  ethnicity_source_concept_id::Attr(Person, Numerical)
 
-  Location::Ob
-  location::Hom(Location, Person)
-  location_id::Attr(Location, Numerical)
+  location_id::Attr(Person, Numerical)
 
-  Provider::Ob
-  provider::Hom(Provider, Person)
-  provider_id::Attr(Provider, Numerical)
+  provider_id::Attr(Person, Numerical)
   
-  CareSite::Ob
-  caresite::Hom(CareSite, Person)
-  care_site_id::Attr(CareSite, Numerical)
+  care_site_id::Attr(Person, Numerical)
+
+  Death::Ob
+  death::Hom(Death, Person)
+  death_date::Attr(Person, Numerical)
+  death_datetime::Attr(Person, Numerical)
+  death_type_concept_id::Attr(Person, Numerical)
+  cause_concept_id::Attr(Person, Numerical)
+  cause_source_value::Attr(Person, Label)
+  cause_source_concept_id::Attr(Person, Numerical)
+
+  ObservationPeriod::Ob
+  observation_period::Hom(ObservationPeriod, Person)
+  observation_period_id::Attr(Person, Numerical)
+  observation_period_start_date::Attr(Person, Numerical)
+  observation_period_end_date::Attr(Person, Numerical)
+  period_type_concept_id::Attr(Person, Numerical)
 
 end
 
