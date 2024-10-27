@@ -125,10 +125,10 @@ omop_tables[:person].columns
 
 end
 
-@acset_type PersonData(SchPerson, 
-    index = [:gender, :birthdate, :race, :ethnicity, :location, :provider, :caresite],
-    unique_index = [:person_id, :gender_concept_id, :birth_datetime, :race_concept_id, :ethnicity_concept_id, :location_id, :provider_id, :care_site_id]
-    )
+@acset_type OMOPCDMData(SchOMOPCDM, 
+    index = [:death, :observation_period],
+    unique_index = [:person_id]
+)
 ```
 
 ```julia
