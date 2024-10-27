@@ -85,38 +85,48 @@ omop_tables[:person].columns
   person_source_value::Attr(Person, Label)
 
   Gender::Ob
+  gender::Hom(Gender, Person)
   gender_concept_id::Attr(Gender, Numerical) 
   gender_source_value::Attr(Gender, Label)
   gender_source_concept_id::Attr(Gender, Numerical)
 
   BirthDate::Ob
+  birthdate::Hom(BirthDate, Person)
   year_of_birth::Attr(BirthDate, Numerical)
   month_of_birth::Attr(BirthDate, Numerical)
   day_of_birth::Attr(BirthDate, Numerical)
   birth_datetime::Attr(BirthDate, Numerical)
 
   Race::Ob
+  race::Hom(Race, Person)
   race_concept_id::Attr(Race, Numerical)
   race_source_value::Attr(Race, Label)
   race_source_concept_id::Attr(Race, Numerical)
 
   Ethnicity::Ob
+  ethnicity::Hom(Ethnicity, Person)
   ethnicity_concept_id::Attr(Ethnicity, Numerical)
   ethnicity_source_value::Attr(Ethnicity, Label)
   ethnicity_source_concept_id::Attr(Ethnicity, Numerical)
 
   Location::Ob
+  location::Hom(Location, Person)
   location_id::Attr(Location, Numerical)
 
   Provider::Ob
+  provider::Hom(Provider, Person)
   provider_id::Attr(Provider, Numerical)
   
   CareSite::Ob
+  caresite::Hom(CareSite, Person)
   care_site_id::Attr(CareSite, Numerical)
 
 end
 
-@acset_type PersonData(SchPerson, index=[:person_id])
+@acset_type PersonData(SchPerson, 
+    index = [:gender, :birthdate, :race, :ethnicity, :location, :provider, :caresite],
+    unique_index = [:person_id, :gender_concept_id, :birth_datetime, :race_concept_id, :ethnicity_concept_id, :location_id, :provider_id, :care_site_id]
+    )
 ```
 
 ```julia
